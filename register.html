@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | Nepal Local Services Finder</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#2563EB,#0EA5E9);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:30px;
+}
+
+.register-box{
+background:#fff;
+width:1000px;
+border-radius:20px;
+overflow:hidden;
+display:flex;
+box-shadow:0 20px 50px rgba(0,0,0,.2);
+}
+
+.left{
+width:40%;
+background:linear-gradient(rgba(37,99,235,.8),rgba(37,99,235,.8)),
+url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1000");
+background-size:cover;
+background-position:center;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:40px;
+text-align:center;
+color:white;
+}
+
+.left h2{
+font-weight:700;
+margin-bottom:20px;
+}
+
+.right{
+width:60%;
+padding:40px;
+}
+
+.right h3{
+text-align:center;
+font-weight:700;
+color:#2563EB;
+margin-bottom:30px;
+}
+
+.form-control,
+.form-select{
+height:50px;
+border-radius:10px;
+}
+
+.btn-register{
+width:100%;
+height:50px;
+background:#2563EB;
+border:none;
+border-radius:10px;
+font-weight:600;
+color:white;
+transition:.3s;
+}
+
+.btn-register:hover{
+background:#1D4ED8;
+transform:translateY(-2px);
+}
+
+.login-link{
+text-align:center;
+margin-top:20px;
+}
+
+@media(max-width:768px){
+
+.register-box{
+flex-direction:column;
+width:100%;
+}
+
+.left{
+display:none;
+}
+
+.right{
+width:100%;
+}
+}
+</style>
+</head>
+<body>
+<div class="register-box">
+<div class="left">
+<div>
+<h2>Join Nepal Local Services Finder</h2>
+<p>
+Create your account and connect with trusted local professionals across Nepal.
+</p>
+</div>
+</div>
+<div class="right">
+<h3>Create Account</h3>
+<form id="registerForm" action="/register" method="POST" enctype="multipart/form-data">
+<div class="row">
+<div class="col-md-6 mb-3">
+<label>Full Name</label>
+<input type="text"
+name="fullname"
+class="form-control"
+required>
+</div>
+<div class="col-md-6 mb-3">
+<label>Email</label>
+<input type="email"
+name="email"
+class="form-control"
+required>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6 mb-3">
+<label>Phone Number</label>
+<input type="text"
+name="phone"
+class="form-control"
+required>
+</div>
+<div class="col-md-6 mb-3">
+<label>User Type</label>
+<select class="form-select" name="role" id="role">
+    <option value="Customer">Customer</option>
+    <option value="Service Provider">Service Provider</option>
+    <option value="Admin">Admin</option>
+</select>
+</div>
+</div>
+<div class="mb-3">
+<label>Address</label>
+<input type="text"
+name="address"
+class="form-control"
+required>
+</div>
+<div class="mb-3" id="photoBox" style="display:none;">
+    <label>Upload Profile Photo</label>
+    <input type="file"
+           name="photo"
+           class="form-control"
+           accept="image/*">
+</div>
+<div class="mb-3" id="serviceBox" style="display:none;">
+    <label>Service Name</label>
+    <select name="service_name" id="service_name" class="form-select">
+        <option value="">Select Service</option>
+        <option value="Plumber">Plumber</option>
+        <option value="Electrician">Electrician</option>
+        <option value="Carpenter">Carpenter</option>
+        <option value="Painter">Painter</option>
+        <option value="Cleaner">Cleaner</option>
+        <option value="Tutor">Tutor</option>
+        <option value="Beautician">Beautician</option>
+        <option value="Computer Repair">Computer Repair</option>
+        <option value="Mobile Repair">Mobile Repair</option>
+        <option value="AC Repair">AC Repair</option>
+        <option value="CCTV Installation">CCTV Installation</option>
+        <option value="Appliance Repair">Appliance Repair</option>
+        <option value="Welder">Welder</option>
+        <option value="Mechanic">Mechanic</option>
+        <option value="Gardener">Gardener</option>
+        <option value="Photographer">Photographer</option>
+    </select>
+</div>
+<div class="row">
+<div class="col-md-6 mb-3">
+<label>Password</label>
+<input
+type="password"
+name="password"
+id="password"
+class="form-control"
+required
+minlength="8"
+maxlength="50"
+placeholder="Minimum 8 characters">
+<button
+    type="button"
+    class="btn btn-outline-secondary"
+    onclick="togglePasswords(this)">
+    <i class="bi bi-eye"></i>
+</button>
+<small class="text-danger" id="passwordError"></small>
+</div>
+<div class="col-md-6 mb-3">
+<label>Confirm Password</label>
+<input
+type="password"
+name="confirm_password"
+id="confirmPassword"
+class="form-control"
+required
+minlength="8"
+maxlength="50">
+<small class="text-danger" id="confirmError"></small>
+</div>
+</div>
+<button type="submit" class="btn-register">
+    Create Account
+</button>
+</form>
+<div class="login-link">
+Already have an account?
+<a href="/login">Login</a>
+</div>
+</div>
+</div>
+<script>
+const form=document.getElementById("registerForm");
+form.addEventListener("submit",function(e){
+let password=document.getElementById("password").value;
+let confirm=document.getElementById("confirmPassword").value;
+document.getElementById("passwordError").innerHTML="";
+document.getElementById("confirmError").innerHTML="";
+if(password.length<8){
+e.preventDefault();
+document.getElementById("passwordError").innerHTML=
+"Password must be at least 8 characters.";
+return;
+}
+if(password!==confirm){
+e.preventDefault();
+document.getElementById("confirmError").innerHTML=
+"Passwords do not match.";
+}
+});
+const role=document.getElementById("role");
+const photoBox=document.getElementById("photoBox");
+const serviceBox=document.getElementById("serviceBox");
+function toggleFields(){
+    if(role.value==="Service Provider"){
+        photoBox.style.display="block";
+        serviceBox.style.display="block";
+    }else{
+        photoBox.style.display="none";
+        serviceBox.style.display="none";
+    }
+}
+role.addEventListener("change",toggleFields);
+window.onload=toggleFields;
+function togglePasswords(btn){
+    const password=document.getElementById("password");
+    const confirm=document.getElementById("confirmPassword");
+    const icon=btn.querySelector("i");
+    if(password.type==="password"){
+        password.type="text";
+        confirm.type="text";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    }else{
+        password.type="password";
+        confirm.type="password";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    }
+}
+</script>
+</body>
+</html>

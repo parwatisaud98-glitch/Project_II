@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Bookings</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+body{
+background:#f5f7fb;
+font-family:Poppins,sans-serif;
+}
+
+.sidebar{
+position:fixed;
+width:250px;
+height:100vh;
+background:linear-gradient(180deg,#0f172a,#2563eb);
+}
+
+.sidebar h2{
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 20px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover,
+.sidebar .active{
+background:white;
+color:#2563eb;
+}
+
+.main{
+margin-left:250px;
+padding:30px;
+}
+
+.card{
+border:none;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>Admin Panel</h2>
+
+<a href="/admin_dashboard">
+<i class="bi bi-speedometer2"></i>
+Dashboard
+</a>
+
+<a href="/manage_customers">
+<i class="bi bi-people"></i>
+Customers
+</a>
+
+<a href="/manage_providers">
+<i class="bi bi-person-workspace"></i>
+Providers
+</a>
+
+<a href="/manage_services">
+<i class="bi bi-tools"></i>
+Services
+</a>
+
+<a href="/manage_bookings" class="active">
+<i class="bi bi-calendar-check"></i>
+Bookings
+</a>
+
+<a href="/reviews">
+<i class="bi bi-star"></i>
+Reviews
+</a>
+
+<a href="/notifications">
+<i class="bi bi-bell"></i>
+Notifications
+</a>
+
+<a href="/settings">
+<i class="bi bi-gear"></i>
+Settings
+</a>
+
+<a href="/logout">
+<i class="bi bi-box-arrow-right"></i>
+Logout
+</a>
+
+</div>
+
+<div class="main">
+
+{% with messages=get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-success">
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="card p-4">
+
+<div class="d-flex justify-content-between mb-3">
+
+<h3>Manage Bookings</h3>
+
+<input
+type="text"
+id="search"
+class="form-control w-25"
+placeholder="Search Booking">
+
+</div>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-primary">
+
+<tr>
+
+<th>ID</th>
+
+<th>Customer</th>
+
+<th>Provider</th>
+
+<th>Service</th>
+
+<th>Date</th>
+
+<th>Time</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="bookingTable">
+
+{% for booking in bookings %}
+
+<tr>
+
+<td>{{ booking.id }}</td>
+
+<td>{{ booking.customer_name }}</td>
+
+<td>{{ booking.provider_name }}</td>
+
+<td>{{ booking.service_name }}</td>
+
+<td>{{ booking.booking_date }}</td>
+
+<td>{{ booking.booking_time }}</td>
+
+<td>
+
+{% if booking.status=="Pending" %}
+<span class="badge bg-warning">
+{{ booking.status }}
+</span>
+
+{% elif booking.status=="Accepted" %}
+<span class="badge bg-primary">
+{{ booking.status }}
+</span>
+
+{% elif booking.status=="Completed" %}
+<span class="badge bg-success">
+{{ booking.status }}
+</span>
+
+{% else %}
+<span class="badge bg-danger">
+{{ booking.status }}
+</span>
+{% endif %}
+
+</td>
+
+<td>
+
+<a href="/booking_status/{{ booking.id }}/Accepted"
+class="btn btn-primary btn-sm">
+Accept
+</a>
+
+<a href="/booking_status/{{ booking.id }}/Completed"
+class="btn btn-success btn-sm">
+Complete
+</a>
+
+<a href="/booking_status/{{ booking.id }}/Rejected"
+class="btn btn-warning btn-sm">
+Reject
+</a>
+
+<a href="/delete_booking/{{ booking.id }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete Booking?')">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("search").addEventListener("keyup",function(){
+
+let value=this.value.toLowerCase();
+
+let rows=document.querySelectorAll("#bookingTable tr");
+
+rows.forEach(function(row){
+
+row.style.display=row.innerText.toLowerCase().includes(value)
+? ""
+: "none";
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

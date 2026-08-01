@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Providers</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+body{
+    background:#f5f7fb;
+    font-family:Poppins,sans-serif;
+}
+
+.sidebar{
+    width:250px;
+    height:100vh;
+    position:fixed;
+    background:linear-gradient(180deg,#0f172a,#2563eb);
+}
+
+.sidebar h2{
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:15px 20px;
+}
+
+.sidebar a:hover,
+.sidebar .active{
+    background:white;
+    color:#2563eb;
+}
+
+.main{
+    margin-left:250px;
+    padding:30px;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+img{
+    border-radius:8px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<h2>Admin Panel</h2>
+
+<a href="/admin_dashboard">
+<i class="bi bi-speedometer2"></i> Dashboard
+</a>
+
+<a href="/manage_customers">
+<i class="bi bi-people"></i> Customers
+</a>
+
+<a href="/manage_providers" class="active">
+<i class="bi bi-person-workspace"></i> Providers
+</a>
+
+<a href="/manage_services">
+<i class="bi bi-tools"></i> Services
+</a>
+
+<a href="/manage_bookings">
+<i class="bi bi-calendar-check"></i> Bookings
+</a>
+
+<a href="/reviews">
+<i class="bi bi-star"></i> Reviews
+</a>
+
+<a href="/notifications">
+<i class="bi bi-bell"></i> Notifications
+</a>
+
+<a href="/settings">
+<i class="bi bi-gear"></i> Settings
+</a>
+
+<a href="/logout">
+<i class="bi bi-box-arrow-right"></i> Logout
+</a>
+
+</div>
+
+<div class="main">
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-success">
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="card p-4">
+
+<div class="d-flex justify-content-between mb-3">
+
+<h3>Manage Providers</h3>
+
+<input
+type="text"
+id="search"
+class="form-control w-25"
+placeholder="Search Provider">s
+</div>
+<table class="table table-bordered table-hover">
+<thead class="table-primary">
+<tr>
+<th>ID</th>
+<th>Image</th>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Service</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="providerTable">
+{% for provider in providers %}
+<tr>
+<td>{{ loop.index }}</td>
+<td>
+{% if provider.image %}
+<img src="{{ url_for('static', filename='uploads/' + provider.image) }}"
+width="60"
+height="60">
+{% else %}
+No Image
+{% endif %}
+</td>
+<td>{{ provider.fullname }}</td>
+<td>{{ provider.email }}</td>
+<td>{{ provider.phone }}</td>
+<td>{{ provider.service_name }}</td>
+<td>
+{% if provider.status=="Approved" %}
+<span class="badge bg-success">
+Approved
+</span>
+{% elif provider.status=="Rejected" %}
+<span class="badge bg-danger">
+Rejected
+</span>
+{% else %}
+<span class="badge bg-warning">
+Pending
+</span>
+{% endif %}
+</td>
+<td>
+<a href="/approve_provider/{{ provider.id }}"
+class="btn btn-success btn-sm">
+Approve
+</a>
+<a href="/reject_provider/{{ provider.id }}"
+class="btn btn-warning btn-sm">
+Reject
+</a>
+<a href="/delete_provider/{{ provider.id }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete Provider?')">
+Delete
+</a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+<script>document.getElementById("search").addEventListener("keyup",function(){
+let value=this.value.toLowerCase();
+let rows=document.querySelectorAll("#providerTable tr");
+rows.forEach(function(row){
+row.style.display=row.innerText.toLowerCase().includes(value)
+? ""
+: "none";
+});
+});
+</script>
+</body>
+</html>

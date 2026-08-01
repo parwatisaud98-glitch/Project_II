@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Provider Profile</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f7fb;
+}
+
+.navbar{
+background:#0d6efd;
+}
+
+.navbar-brand,
+.nav-link{
+color:#fff!important;
+font-weight:500;
+}
+
+.profile-card{
+background:#fff;
+border-radius:20px;
+padding:30px;
+box-shadow:0 10px 30px rgba(0,0,0,.1);
+margin-top:40px;
+}
+
+.profile-img{
+width:180px;
+height:180px;
+border-radius:50%;
+border:6px solid #0d6efd;
+object-fit:cover;
+}
+
+.badge-verified{
+background:#198754;
+font-size:15px;
+}
+
+.info-box{
+background:#eef4ff;
+border-radius:15px;
+padding:15px;
+margin-top:20px;
+}
+
+.skill{
+display:inline-block;
+background:#0d6efd;
+color:white;
+padding:8px 15px;
+border-radius:20px;
+margin:5px;
+font-size:14px;
+}
+
+.book-btn{
+border-radius:30px;
+font-size:18px;
+padding:12px;
+}
+
+.similar-card{
+background:#fff;
+border-radius:15px;
+padding:20px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+transition:.3s;
+text-align:center;
+}
+
+.similar-card:hover{
+transform:translateY(-8px);
+}
+
+.footer{
+margin-top:60px;
+background:#0d6efd;
+color:white;
+padding:20px;
+text-align:center;
+}
+</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg">
+<div class="container">
+<a class="navbar-brand" href="/">
+<i class="bi bi-geo-alt-fill"></i>
+Nepal Local Services
+</a>
+<div>
+<a href="/" class="nav-link d-inline">Home</a>
+<a href="/search" class="nav-link d-inline">Services</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="profile-card">
+<div class="row">
+<div class="col-md-4 text-center">
+{% if provider.image %}
+<img src="{{ url_for('static', filename='uploads/' + provider.image) }}"
+     class="profile-img">
+{% else %}
+<img src="{{ url_for('static', filename='images/user.png') }}"
+     class="profile-img">
+{% endif %}
+<h3 class="mt-3">{{ provider.fullname }}</h3>
+<h5 class="text-muted">{{ provider.role }}</h5>
+<span class="badge badge-verified">
+Verified Provider
+</span>
+</div>
+<div class="col-md-8">
+{% if session.get("user_id") == provider.id %}
+<form action="/provider_profile/{{ provider.id }}"
+      method="POST"
+      enctype="multipart/form-data">
+<div class="mb-3 text-center">
+{% if provider.image %}
+<img src="{{ url_for('static', filename='uploads/' + provider.image) }}"
+     class="profile-img">
+{% else %}
+<img src="{{ url_for('static', filename='images/user.png') }}"
+     class="profile-img">
+{% endif %}
+<br><br>
+<input type="file"
+       name="image"
+       class="form-control">
+</div>
+<div class="mb-3">
+<label>Full Name</label>
+<input type="text"
+       class="form-control"
+       name="fullname"
+       value="{{ provider.fullname }}">
+</div>
+<div class="mb-3">
+<label>Email</label>
+<input type="email"
+       class="form-control"
+       name="email"
+       value="{{ provider.email }}">
+</div>
+<div class="mb-3">
+<label>Phone</label>
+<input type="text"
+       class="form-control"
+       name="phone"
+       value="{{ provider.phone }}">
+</div>
+<div class="mb-3">
+<label>Address</label>
+<input type="text"
+       class="form-control"
+       name="address"
+       value="{{ provider.address }}">
+</div>
+<div class="mb-3">
+<label>Service Name</label>
+<input type="text"
+       class="form-control"
+       name="service_name"
+       value="{{ provider.service_name }}">
+</div>
+<div class="mb-3">
+<label>Experience</label>
+<input type="text"
+       class="form-control"
+       name="experience"
+       value="{{ provider.experience }}">
+</div>
+<div class="mb-3">
+<label>Description</label>
+<textarea
+class="form-control"
+name="description"
+rows="4">{{ provider.description }}</textarea>
+</div>
+<div class="mb-3">
+<label>Price</label>
+<input type="text"
+       class="form-control"
+       name="price"
+       value="{{ provider.price }}">
+</div>
+<div class="mb-3">
+<label>Available Time</label>
+<input type="text"
+       class="form-control"
+       name="available_time"
+       value="{{ provider.available_time }}">
+</div>
+<button class="btn btn-success w-100">
+Update Profile
+</button>
+</form>
+{% else %}
+<div class="card p-4">
+    <h3>{{ provider.fullname }}</h3>
+    <p><strong>Email:</strong> {{ provider.email }}</p>
+    <p><strong>Phone:</strong> {{ provider.phone }}</p>
+    <p><strong>Address:</strong> {{ provider.address }}</p>
+    <p><strong>Service:</strong> {{ provider.service_name }}</p>
+    <p><strong>Experience:</strong> {{ provider.experience }}</p>
+    <p><strong>Price:</strong> Rs. {{ provider.price }}</p>
+    <p><strong>Available:</strong> {{ provider.available_time }}</p>
+    <p>{{ provider.description }}</p>
+    <a href="/booking/{{ provider.id }}"
+       class="btn btn-primary">
+        Book Now
+    </a>
+</div>
+{% endif %}
+</div>
+</div>
+</div>
+<!-- Services Offered -->
+<h3 class="mt-5 mb-4">
+    <i class="bi bi-tools text-primary"></i>
+    Services Offered
+</h3>
+{% if services %}
+<div class="row">
+{% for service in services %}
+<div class="col-md-6 mb-4">
+<div class="card shadow-sm border-0 h-100">
+    {% if service.image %}
+    <img src="{{ url_for('static', filename='uploads/' + service.image) }}"
+         class="card-img-top"
+         style="height:220px; object-fit:cover;">
+    {% endif %}
+    <div class="card-body">
+        <h5 class="fw-bold">
+            {{ service.service_name }}
+        </h5>
+        <span class="badge bg-primary mb-2">
+            {{ service.category }}
+        </span>
+        <p class="text-muted">
+            {{ service.description }}
+        </p>
+        <h5 class="text-success">
+            Rs. {{ service.price }}
+        </h5>
+    </div>
+</div>
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div class="alert alert-secondary">
+    No services available.
+</div>
+{% endif %}
+<h3 class="mt-5 mb-4">
+Customer Reviews
+</h3>
+<h5 class="text-warning">
+⭐ {{ rating.avg_rating or 0 }}/5
+({{ rating.total_reviews }} Reviews)
+</h5>
+{% if reviews %}
+    {% for r in reviews %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>{{ r.fullname }}</h5>
+            <div class="text-warning">
+                {% for i in range(r.rating) %}
+                ⭐
+                {% endfor %}
+            </div>
+            <p class="mt-2">
+                {{ r.review }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<div class="alert alert-secondary">
+No Reviews Yet.
+</div>
+{% endif %}
+</div>
+<footer class="footer">
+<h5>Nepal Local Services Finder</h5>
+<p>
+Trusted Local Professionals Across Nepal
+</p>
+<p>
+© 2026 All Rights Reserved
+</p>
+</footer>
+</body>
+</html>

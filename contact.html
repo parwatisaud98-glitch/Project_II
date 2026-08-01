@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+}
+
+.navbar{
+background:#2563eb;
+}
+
+.navbar-brand,
+.nav-link{
+color:white!important;
+font-weight:500;
+}
+
+.hero{
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+color:white;
+padding:70px 0;
+text-align:center;
+}
+
+.contact-card{
+background:white;
+border-radius:20px;
+padding:35px;
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+margin-top:-50px;
+position:relative;
+z-index:10;
+}
+
+.form-control{
+height:50px;
+border-radius:12px;
+}
+
+textarea.form-control{
+height:140px;
+resize:none;
+}
+
+.info-box{
+background:#f8fafc;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+transition:.3s;
+}
+
+.info-box:hover{
+transform:translateY(-5px);
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.info-box i{
+font-size:28px;
+color:#2563eb;
+margin-bottom:10px;
+}
+
+.btn-send{
+background:#2563eb;
+color:white;
+height:50px;
+border:none;
+border-radius:12px;
+font-weight:600;
+transition:.3s;
+}
+
+.btn-send:hover{
+background:#1d4ed8;
+}
+
+.social a{
+display:inline-block;
+width:45px;
+height:45px;
+line-height:45px;
+text-align:center;
+border-radius:50%;
+background:#2563eb;
+color:white;
+margin:5px;
+font-size:20px;
+transition:.3s;
+}
+
+.social a:hover{
+background:#1d4ed8;
+transform:scale(1.1);
+}
+
+.footer{
+background:#0f172a;
+color:white;
+padding:20px;
+text-align:center;
+margin-top:40px;
+}
+
+iframe{
+border-radius:15px;
+width:100%;
+height:300px;
+border:none;
+}
+</style>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg">
+<div class="container">
+<a class="navbar-brand" href="#">
+<i class="bi bi-geo-alt-fill"></i>
+Nepal Local Services Finder
+</a>
+<div>
+<a href="/" class="nav-link d-inline">Home</a>
+<a href="/search" class="nav-link d-inline">Services</a>
+<a href="/contact" class="nav-link d-inline">Contact</a>
+</div>
+</div>
+</nav>
+<section class="hero">
+<div class="container">
+<h1 class="fw-bold">Contact Us</h1>
+<p>We'd love to hear from you. Feel free to contact our support team.</p>
+</div>
+</section>
+<div class="container">
+<div class="contact-card">
+<div class="row">
+<div class="col-lg-7">
+<h3 class="mb-4">Send us a Message</h3>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-success">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<form action="/contact" method="POST">
+<div class="row">
+<div class="col-md-6 mb-3">
+<label>Name</label>
+<input
+type="text"
+class="form-control"
+name="fullname"
+placeholder="Your Full Name"
+required>
+</div>
+<div class="col-md-6 mb-3">
+<label>Email</label>
+<input
+type="email"
+class="form-control"
+name="email"
+placeholder="Your Email Address"
+required>
+</div>
+</div>
+<div class="mb-3">
+<label>Subject</label>
+<input
+type="text"
+class="form-control"
+name="subject"
+placeholder="Subject"
+required>
+</div>
+<div class="mb-3">
+<label>Message</label>
+<textarea
+class="form-control"
+name="message"
+placeholder="Write your message..."
+required></textarea>
+</div>
+<button type="submit" class="btn btn-send w-100">
+<i class="bi bi-send-fill"></i>
+Send Message
+</button>
+</form>
+</div>
+<div class="col-lg-5">
+<h3 class="mb-4">Contact Information</h3>
+<div class="info-box">
+<i class="bi bi-geo-alt-fill"></i>
+<h5>Address</h5>
+<p>Mahendranagar, Kanchanpur, Nepal</p>
+</div>
+<div class="info-box">
+<i class="bi bi-telephone-fill"></i>
+<h5>Phone</h5>
+<p>+977-98XXXXXXXX</p>
+</div>
+<div class="info-box">
+<i class="bi bi-envelope-fill"></i>
+<h5>Email</h5>
+<p>support@localservices.com</p>
+</div>
+<div class="social mt-4">
+<a href="#"><i class="bi bi-facebook"></i></a>
+<a href="#"><i class="bi bi-instagram"></i></a>
+<a href="#"><i class="bi bi-twitter-x"></i></a>
+<a href="#"><i class="bi bi-linkedin"></i></a>
+</div>
+</div>
+</div>
+<hr class="my-5">
+<h3 class="text-center mb-4">Our Location</h3>
+<iframe
+src="https://www.google.com/maps?q=Mahendranagar,Nepal&output=embed">
+</iframe>
+</div>
+</div>
+<footer class="footer">
+<h5>Nepal Local Services Finder</h5>
+<p>Connecting Customers with Trusted Local Professionals Across Nepal</p>
+<p>© 2026 All Rights Reserved.</p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
