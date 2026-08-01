@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepal Local Services Finder</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="/">
+            <i class="bi bi-geo-alt-fill"></i>
+            Nepal Local Services
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/providers">Providers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+            <li class="nav-item ms-3">
+               <a href="/login" class="btn btn-primary rounded-pill px-4">
+               Login
+               </a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- HERO -->
+<section class="hero py-5">
+<div class="container">
+<div class="row align-items-center">
+<div class="col-lg-6">
+<span class="badge bg-primary mb-3">
+Trusted Local Services in Nepal
+</span>
+<h1 class="display-3 fw-bold">
+Find Trusted
+<span class="text-primary">
+Local Professionals
+</span>
+Near You
+</h1>
+<p class="lead text-muted mt-4">
+Book trusted plumbers, electricians, painters, tutors, cleaners,
+beauticians and many more verified professionals anywhere in Nepal.
+Fast, Secure and Affordable.
+</p>
+<form action="/search" method="GET" class="mt-4">
+<div class="input-group shadow rounded-pill overflow-hidden">
+<input
+name="keyword"
+class="form-control border-0"
+placeholder="Search plumber, electrician, tutor..."
+autocomplete="off"
+required>
+
+<button class="btn btn-primary px-4">
+    <i class="bi bi-search"></i> Search
+</button>
+</div>
+<div class="mt-4 d-flex gap-3 flex-wrap">
+<a href="/search" class="btn btn-primary btn-lg px-5 rounded-pill">
+    <i class="bi bi-calendar-check me-2"></i>
+    Find Services
+</a>
+
+<a href="/login" class="btn btn-primary rounded-pill px-4">
+    Login
+</a>
+</a>
+</div>
+</form>
+
+<!-- Statistics Section -->
+<div class="row mt-5">
+<div class="col-4 text-center">
+<h3 class="fw-bold text-primary">100+</h3>
+<p>Services</p>
+</div>
+<div class="col-4 text-center">
+<h3 class="fw-bold text-primary">500+</h3>
+<p>Providers</p>
+</div>
+<div class="col-4 text-center">
+<h3 class="fw-bold text-primary">1000+</h3>
+<p>Bookings</p>
+</div>
+</div>
+</div>
+<div class="col-lg-6 text-center">
+    <img src="{{ url_for('static', filename='images/heros.png') }}"
+         alt="Nepal Local Services"
+         class="hero-image">
+</div>
+</div>
+</div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section py-5">
+<div class="container">
+<div class="text-center mb-5">
+<!-- <span class="badge bg-primary px-3 py-2">
+Our Services
+</span> -->
+<h2 class="fw-bold display-5 mt-3">
+Popular Services
+</h2>
+<p class="text-muted">
+Choose from Nepal's most requested local services.
+</p>
+</div>
+<div class="row g-4">
+{% if services %}
+    {% for service in services %}
+    <div class="col-lg-4 col-md-6 mb-4">
+    <!-- <div class="col-lg-4 col-md-6 col-sm-12 mb-4"></div> -->
+        <a href="/search?keyword={{ service.service_name }}"
+           class="text-decoration-none text-dark">
+            <div class="service-card text-center">
+                {% if service.image %}
+                <img src="{{ url_for('static', filename='uploads/' + service.image) }}"
+                     class="service-img"
+                     alt="">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/user.png') }}"
+                     class="service-img"
+                     alt="">
+                {% endif %}
+                <h5>{{ service.service_name }}</h5>
+                <p class="text-muted">
+                {% if service.description %}
+                {{ service.description[:55] }}...
+                {% else %}
+                Professional Service
+                {% endif %}
+                </p>
+                <a href="/search?keyword={{ service.service_name }}"
+                class="btn btn-outline-primary rounded-pill px-4">
+                Explore
+                </a>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+{% else %}
+<div class="col-12 text-center">
+    <h4>No Services Found</h4>
+</div>
+{% endif %}
+</div>
+</div>
+</section>
+
+ <!-- FEATURED PROVIDERS --> 
+<section class="bg-light py-5">
+<div class="container">
+<h2 class="text-center fw-bold mb-5">
+Top Rated Providers
+</h2>
+<div class="row">
+{% if providers %}
+    {% for provider in providers %}
+    <div class="col-md-4 mb-4">
+        <div class="provider-card text-center">
+            {% if provider.image %}
+            <img src="{{ url_for('static', filename='uploads/' + provider.image) }}"
+                class="provider-img"
+                width="120"
+                height="120">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/user.png') }}"
+                class="provider-img"
+                width="120"
+                height="120">
+            {% endif %}
+            <h5 class="mt-3">{{ provider.fullname }}</h5>
+            <p class="text-primary fw-bold">
+                {{ provider.service_name }}
+            </p>
+
+            <!-- NEW DETAILS -->
+            <p>
+                <i class="bi bi-geo-alt-fill text-danger"></i>
+                {{ provider.address }}
+            </p>
+            <p>
+                <i class="bi bi-star-fill text-warning"></i>
+                {{ provider.average_rating }}/5
+                ({{ provider.total_reviews }} Reviews)
+            </p>
+            <span class="badge bg-success mb-3">
+                <i class="bi bi-patch-check-fill"></i>
+                Verified Provider
+            </span>
+            <br>
+            <a href="/provider_profile/{{ provider.id }}"
+            class="btn btn-outline-primary rounded-pill px-4">
+                View Profile
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<div class="col-12 text-center">
+    <h4>No Providers Found</h4>
+</div>
+{% endif %}
+</div>
+</div> 
+</section> 
+<!-- WHY CHOOSE US -->
+<section class="py-5" style="background:#f8f9fc;">
+<div class="container">
+<div class="text-center mb-5">
+
+<div class="mb-3">
+    <span class="badge bg-primary px-4 py-2 rounded-pill">
+        Why Choose Us
+    </span>
+</div>
+
+<h2 class="display-4 fw-bold section-title">
+    Why Customers Trust Us
+</h2>
+
+<p class="text-muted mt-3 fs-5">
+    We connect you with trusted and verified local professionals across Nepal.
+</p>
+
+</div>
+<div class="row justify-content-center g-4 mt-3">
+<div class="col-md-3">
+<div class="card border-0 shadow-sm h-100 text-center p-4 feature-card">
+<div class="mb-3">
+<i class="bi bi-patch-check-fill text-primary display-3"></i>
+</div>
+<h5 class="fw-bold">
+Verified Providers
+</h5>
+<p class="text-muted">
+Every provider is verified before joining our platform.
+</p>
+</div>
+</div>
+<div class="col-md-3">
+<div class="card border-0 shadow-sm h-100 text-center p-4 feature-card">
+<div class="mb-3">
+<i class="bi bi-lightning-charge-fill text-warning display-3"></i>
+</div>
+<h5 class="fw-bold">
+Fast Booking
+</h5>
+<p class="text-muted">
+Book your favourite professional in just a few clicks.
+</p>
+</div>
+</div>
+<div class="col-md-3">
+<div class="card border-0 shadow-sm h-100 text-center p-4 feature-card">
+<div class="mb-3">
+<i class="bi bi-star-fill text-success display-3"></i>
+</div>
+<h5 class="fw-bold">
+Top Rated Experts
+</h5>
+<p class="text-muted">
+Choose providers based on customer ratings and reviews.
+</p>
+</div>
+</div>
+<div class="col-md-3">
+<div class="card border-0 shadow-sm h-100 text-center p-4 feature-card">
+<div class="mb-3">
+<i class="bi bi-shield-lock-fill text-danger display-3"></i>
+</div>
+<h5 class="fw-bold">
+Safe & Secure
+</h5>
+<p class="text-muted">
+Your bookings and personal information remain secure.
+</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ABOUT -->
+<section class="py-5 bg-light" id="about">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">About Nepal Local Services Finder</h2>
+            <p class="text-muted">
+                Connecting customers with trusted local professionals across Nepal.
+            </p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <p class="text-center">
+                    <strong>Nepal Local Services Finder</strong> is an online platform
+                    that helps people quickly find trusted plumbers, electricians,
+                    tutors, cleaners, painters, mechanics, beauticians and many other
+                    verified service providers.
+                </p>
+                <p class="text-center">
+                    Our mission is to make local service booking simple,
+                    secure and affordable while helping service providers
+                    grow their businesses.
+                </p>
+
+                <div class="row mt-4 text-center">
+                    <div class="col-md-3 mb-3">
+                        <i class="bi bi-patch-check-fill text-primary fs-2"></i>
+                        <h6 class="mt-2">Verified</h6>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <i class="bi bi-lightning-charge-fill text-warning fs-2"></i>
+                        <h6 class="mt-2">Fast Booking</h6>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <i class="bi bi-star-fill text-success fs-2"></i>
+                        <h6 class="mt-2">Top Rated</h6>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <i class="bi bi-shield-lock-fill text-danger fs-2"></i>
+                        <h6 class="mt-2">Secure</h6>
+                    </div>
+
+                </div>
+                <div class="text-center mt-3">
+                    <a href="/services" class="btn btn-primary rounded-pill px-4">
+                        Explore Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-5 bg-primary text-white">
+<div class="container">
+<div class="row text-center">
+<div class="col-md-3">
+<h1>500+</h1>
+<p>Verified Providers</p>
+</div>
+<div class="col-md-3">
+<h1>1000+</h1>
+<p>Bookings</p>
+</div>
+<div class="col-md-3">
+<h1>98%</h1>
+<p>Customer Satisfaction</p>
+</div>
+<div class="col-md-3">
+<h1>75+</h1>
+<p>Cities Covered</p>
+</div>
+</div>
+</div>
+</section>
+<footer class="bg-dark text-white pt-5 pb-3">
+<div class="container">
+<div class="row">
+<div class="col-md-4">
+<h4>Nepal Local Services</h4>
+<p>
+Connecting Customers with Verified Professionals.
+</p>
+</div>
+<div class="col-md-4">
+<h5>Quick Links</h5>
+<p><a href="/" class="text-white text-decoration-none">Home</a></p>
+<p><a href="/search" class="text-white text-decoration-none">Search</a></p>
+<p><a href="/contact" class="text-white text-decoration-none">Contact</a></p>
+</div>
+<div class="col-md-4">
+<h5>Contact</h5>
+<p>support@nepallocalservices.com</p>
+<p>+977-98XXXXXXXX</p>
+<div>
+<i class="bi bi-facebook fs-4 me-2"></i>
+<i class="bi bi-instagram fs-4 me-2"></i>
+<i class="bi bi-youtube fs-4"></i>
+</div>
+</div>
+</div>
+<hr>
+<p class="text-center mb-0">
+© 2026 Nepal Local Services Finder
+</p>
+</div>
+</footer>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
